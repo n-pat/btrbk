@@ -36,6 +36,15 @@ build_all() {
   for tag in $@; do
     build_and_push_images "$tag"
   done
+
+  # docker manifest create npatde/btrbk:latest npatde/btrbk:alpine-arm32v6-latest npatde/btrbk:alpine-amd64-latest
+  #docker manifest create 
+  #  $PRODUCT_NAME:$VERSION
+  #  $PRODUCT_NAME:alpine-arm32v6-$VERSION
+  #  $PRODUCT_NAME:alpine-amd64-$VERSION
+  
+  #docker manifest push npatde/btrbk:latest
+  
   #docker rmi $(docker images -q -f dangling=true)
 }
 
