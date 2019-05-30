@@ -36,7 +36,7 @@ build_all() {
   for tag in $@; do
     build_and_push_images "$tag"
   done
-  docker rmi $(docker images -q -f dangling=true)
+  #docker rmi $(docker images -q -f dangling=true)
 }
 
 #build_all 'amd64 arm32v6 arm32v7 arm32v8'
