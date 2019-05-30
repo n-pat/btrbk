@@ -4,7 +4,7 @@ set -ex
 
 VERSION="${1:-latest}"
 ARCHS="${2:-arm32v6}" # 'amd64 arm32v6 arm32v7 arm32v8'
-PRODUCT_NAME="n-pat/btrbk"
+PRODUCT_NAME="npatde/btrbk"
 
 # parameter: "platform-architecture"
 build_and_push_images() {
