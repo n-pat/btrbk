@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -x
+set -ex
 [ $# -eq 1 ] || exit 2
 
 VERSION="$1"
@@ -13,14 +13,13 @@ build_and_push_images() {
   docker build -t "$product_name:alpine-$arch-$VERSION" - <<-EOF
 		FROM $arch/alpine:latest
 
-		#WORKDIR ["/"]
-
-		#RUN apk --no-cache add btrbk
 		RUN apk --update upgrade \
 			&& apk --no-cache --no-progress add \
 				btrbk \
 				tzdata \
 			&& rm -rf /var/cache/apk/*
+
+		ENV TZ Europe/Berlin
 
 		ENTRYPOINT ["btrbk"]
 		CMD ["dryrun"]
@@ -41,6 +40,5 @@ build_all() {
 }
 
 #build_all 'amd64 arm32v6 arm32v7 arm32v8'
-#build_all 'x86_64 arm32v7'
-build_all 'amd64 arm32v7'
+build_all 'arm32v6'
 exit 0
