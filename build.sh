@@ -1,13 +1,16 @@
 #!/bin/sh
 
+set -x
+[ $# -eq 1 ] || exit 2
+
 VERSION="$1"
 product_name="n-pat/btrbk"
 
 # parameter: "platform-architecture"
-function build_and_push_images() {
-  local arch=$1
+build_and_push_images() {
+  arch=$1
 
-  docker build -t "$product_name:$os-$arch-$VERSION" - <<<EOF -
+  docker build -t "$product_name:alpine-$arch-$VERSION" - <<EOF -
 		FROM $arch/alpine:latest
 
 		#WORKDIR ["/"]
@@ -30,9 +33,9 @@ function build_and_push_images() {
   done
 }
 
-function build_all() {
+build_all() {
   for tag in $@; do
-    build_and_push_images "$tag"; fi
+    build_and_push_images "$tag"
   done
   docker rmi $(docker images -q -f dangling=true)
 }
