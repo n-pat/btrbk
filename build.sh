@@ -10,7 +10,7 @@ product_name="n-pat/btrbk"
 build_and_push_images() {
   arch=$1
 
-  docker build -t "$product_name:alpine-$arch-$VERSION" - <<EOF -
+  docker build -t "$product_name:alpine-$arch-$VERSION" - <<-EOF
 		FROM $arch/alpine:latest
 
 		#WORKDIR ["/"]
@@ -24,7 +24,7 @@ build_and_push_images() {
 
 		ENTRYPOINT ["btrbk"]
 		CMD ["dryrun"]
-		EOF
+	EOF
 
   for os in alpine; do
     docker tag  "$product_name:$os-$arch-$VERSION" "$product_name:$os-$arch"
