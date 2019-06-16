@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ex
+set -eux
 
 VERSION="${1:-latest}"
 ARCHS="${2:-arm32v6}" # 'amd64 arm32v6 arm32v7 arm32v8'
