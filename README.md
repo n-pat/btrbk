@@ -16,4 +16,7 @@ Multi-arch docker container for btrbk based on alpine
 	* Linux x86-64 (amd64): https://hub.docker.com/u/amd64/
 * Other architectures built by official images: (but not officially supported by Docker, Inc.)
 	* ARMv5 32-bit (arm32v5): https://hub.docker.com/u/arm32v5/
-	
+
+## Todo: Automated builds
+
+* Generate Dockerfiles.<amd64|arm32v6|...> so that build files exist to build the images on cross-architecture servers or on dockerhub.

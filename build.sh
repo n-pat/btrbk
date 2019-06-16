@@ -3,15 +3,16 @@
 set -eux
 
 VERSION="${1:-latest}"
-ARCHS="${2:-arm32v6}" # 'amd64 arm32v6 arm32v7 arm32v8'
+ARCHS="${2:-amd64}" # 'amd64 arm32v6 arm32v7 arm32v8'
 PRODUCT_NAME="npatde/btrbk"
 
 # parameter: "platform-architecture"
 build_and_push_images() {
   arch=$1
 
-  docker build -t "$PRODUCT_NAME:alpine-$arch-$VERSION" - <<-EOF
-		FROM $arch/alpine:latest
+  docker build --build-arg ARCH=$arch -t "$PRODUCT_NAME:alpine-$arch-$VERSION" - <<-EOF
+        ARG ARCH
+		FROM \$ARCH/alpine:latest
 
 		RUN apk --update upgrade \
 			&& apk --no-cache --no-progress add \
@@ -19,10 +20,12 @@ build_and_push_images() {
 				tzdata \
 			&& rm -rf /var/cache/apk/*
 
+		VOLUME ["/etc/btrbk"]
+
+		# btrbk relies on timezone for snapshot names
 		ENV TZ Europe/Berlin
 
-		ENTRYPOINT ["btrbk"]
-		CMD ["dryrun"]
+		CMD ["/usr/bin/btrbk", "dryrun"]
 	EOF
 
   for os in alpine; do
