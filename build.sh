@@ -12,7 +12,8 @@ build_and_push_images() {
 
   docker build --build-arg ARCH=$arch -t "$PRODUCT_NAME:alpine-$arch-$VERSION" - <<-EOF
         ARG ARCH
-		FROM \$ARCH/alpine:latest
+		# TODO: alpine:latest has broken btrfs-progs. Need 4.17-r1; 4.19-1r0 or 5.x is broken.
+		FROM \$ARCH/alpine:3.8	
 
 		RUN apk --update upgrade \
 			&& apk --no-cache --no-progress add \
