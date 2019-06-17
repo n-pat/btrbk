@@ -21,7 +21,7 @@ build_and_push_images() {
 				tzdata \
 			&& rm -rf /var/cache/apk/*
 
-		VOLUME ["/etc/btrbk"]
+		#VOLUME ["/etc/btrbk", "/var/lock", "/var/log"]
 
 		# btrbk relies on timezone for snapshot names
 		ENV TZ Europe/Berlin
