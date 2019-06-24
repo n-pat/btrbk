@@ -18,6 +18,8 @@ build_and_push_images() {
 		RUN apk --update upgrade \
 			&& apk --no-cache --no-progress add \
 				btrbk \
+				pv \
+				openssh-client \
 				tzdata \
 			&& rm -rf /var/cache/apk/*
 
