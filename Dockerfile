@@ -8,6 +8,7 @@ RUN apk --update upgrade \
 		pv \
 		openssh-client \
 		tzdata \
+		xz \
 	&& rm -rf /var/cache/apk/*
 
 #VOLUME ["/etc/btrbk", "/var/lock", "/var/log"]
