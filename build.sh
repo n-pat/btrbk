@@ -10,28 +10,9 @@ PRODUCT_NAME="npatde/btrbk"
 build_and_push_images() {
   arch=$1
 
-  docker build --build-arg ARCH=$arch -t "$PRODUCT_NAME:alpine-$arch-$VERSION" - <<-EOF
-        ARG ARCH
-		# TODO: alpine:latest has broken btrfs-progs. Need 4.17-r1; 4.19-1r0 or 5.x is broken.
-		FROM \$ARCH/alpine:3.8	
-
-		RUN apk --update upgrade \
-			&& apk --no-cache --no-progress add \
-				btrbk \
-				pv \
-				openssh-client \
-				tzdata \
-			&& rm -rf /var/cache/apk/*
-
-		#VOLUME ["/etc/btrbk", "/var/lock", "/var/log"]
-
-		# btrbk relies on timezone for snapshot names
-		ENV TZ Europe/Berlin
-
-		CMD ["/usr/bin/btrbk", "dryrun"]
-	EOF
-
+  # Currently alpine is the only OS supported. I thought about supporting ubuntu as well.
   for os in alpine; do
+    docker build --build-arg ARCH=$arch -t "$PRODUCT_NAME:$os-$arch-$VERSION" .
     docker tag  "$PRODUCT_NAME:$os-$arch-$VERSION" "$PRODUCT_NAME:$os-$arch"
     #docker push "$PRODUCT_NAME:$os-$arch-$VERSION"
     #docker push "$PRODUCT_NAME:$os-$arch"
@@ -39,11 +20,12 @@ build_and_push_images() {
 }
 
 build_all() {
-  for tag in $@; do
-    build_and_push_images "$tag"
+  for arch in $@; do
+    build_and_push_images "$arch"
   done
 
-  # docker manifest create npatde/btrbk:latest npatde/btrbk:alpine-arm32v6-latest npatde/btrbk:alpine-amd64-latest
+  # Multi-architecture build and push is not active yet. Therefore also the multi-arch manifest is not being pushed automatically.
+  #docker manifest create npatde/btrbk:latest npatde/btrbk:alpine-arm32v6-latest npatde/btrbk:alpine-amd64-latest
   #docker manifest create 
   #  $PRODUCT_NAME:$VERSION
   #  $PRODUCT_NAME:alpine-arm32v6-$VERSION
